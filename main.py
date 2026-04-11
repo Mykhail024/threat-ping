@@ -4,12 +4,14 @@ from providers.base import Location
 from utils import resolve_location
 
 from providers.usgs import USGSProvider
+from providers.om import OMProvider
 
 LOCATION: Location = resolve_location("Ternopil")
 POLL_INTERVAL = 5
 
 PROVIDERS = [
-    USGSProvider(LOCATION)
+    USGSProvider(LOCATION),
+    OMProvider(LOCATION)
 ]
 
 
