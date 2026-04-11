@@ -2,13 +2,16 @@ import time
 
 from providers.base import Location
 from utils import resolve_location
+
 from providers.usgs import USGSProvider
+from providers.weather import WeatherProvider
 
 LOCATION: Location = resolve_location("Ternopil")
 POLL_INTERVAL = 5
 
 PROVIDERS = [
-    USGSProvider(LOCATION, radius_km=1500, min_magnitude=3.0) #radius is debatable and yet to be changed
+    USGSProvider(LOCATION),
+    WeatherProvider(LOCATION)
 ]
 
 
