@@ -18,6 +18,12 @@ For details, please refer to the [LICENSE](./LICENSE) file.
 
 - [Python](https://www.python.org/)
 
+## Third-party licenses
+
+### Lucide Icons
+Icons provided by [Lucide](https://lucide.dev) under the ISC License.
+See [./LICENSES/lucide.txt](./LICENSES/lucide.txt) for full license text.
+
 ## Project Status
 
 This project is in early development.
