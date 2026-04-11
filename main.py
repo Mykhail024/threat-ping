@@ -7,17 +7,19 @@ from utils import resolve_location
 
 from providers.usgs import USGSProvider
 from providers.om import OMProvider
+from providers.noaa import SpaceWeatherProvider
 
 from services.ai_advisor import ThreatAdvisor
 
 load_dotenv()
 
-LOCATION: Location = resolve_location("Osaka")
-POLL_INTERVAL = 30
+LOCATION: Location = resolve_location("Istanbul")
+POLL_INTERVAL = 5
 
 PROVIDERS = [
     USGSProvider(LOCATION),
-    OMProvider(LOCATION)
+    OMProvider(LOCATION),
+    SpaceWeatherProvider(LOCATION)
 ]
 
 
