@@ -1,5 +1,6 @@
 import time
 import os
+import sys
 from dotenv import load_dotenv
 
 from providers.base import Location
@@ -11,45 +12,31 @@ from providers.noaa import SpaceWeatherProvider
 
 from services.ai_advisor import ThreatAdvisor
 
-load_dotenv()
-
-LOCATION: Location = resolve_location("Istanbul")
-POLL_INTERVAL = 5
-
-PROVIDERS = [
-    USGSProvider(LOCATION),
-    OMProvider(LOCATION),
-    SpaceWeatherProvider(LOCATION)
-]
+from PyQt6.QtWidgets import QApplication
+from engine import ThreatEngine
+from services.location_service import LocationService
 
 
 def main():
-    print(f"threat-ping started — {LOCATION.display_name}")
+    app = QApplication(sys.argv)
 
-    advisor = ThreatAdvisor()
-    seen_alerts = set()
+    # Example logic: Get location by IP first
+    loc_service = LocationService()
+    current_location = loc_service.get_by_ip()
 
-    while True:
-        for provider in PROVIDERS:
-            alerts = provider.fetch()
-            for alert_text in alerts:
-                if alert_text not in seen_alerts:
-                    print(alert_text)
-                    seen_alerts.add(alert_text)
+    # Initialize engine
+    engine = ThreatEngine(current_location)
 
-                    # addressing AI only if it's important WARNING/CRITICAL
-                    is_threat = any(keyword in alert_text for keyword in ["Earthquake", "WARNING", "CRITICAL"])
+    # Connect signals 
+    # window = MainWindow()
+    # engine.new_alert_signal.connect(window.add_alert_to_list)
+    # engine.ai_advice_signal.connect(window.show_ai_popup)
 
-                    if is_threat:
-                        print("  [AI is analyzing the threat...]")
-                        advice = advisor.generate_advice(
-                            threat_type=alert_text,
-                            location=LOCATION.display_name,
-                            severity="High"
-                        )
-                        print(f"  {advice}\n")
+    engine.start()
 
-        time.sleep(POLL_INTERVAL)
+    # sys.exit(app.exec()) # This starts the UI event loop
+    print(f"Engine started for: {current_location.display_name}")
+    print("Wait for GUI to be integrated...")
 
 
 if __name__ == "__main__":
