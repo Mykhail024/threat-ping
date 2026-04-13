@@ -8,8 +8,8 @@ import "components"
 
 ApplicationWindow {
     visible: true
-    width: 480
-    height: 440
+    width: 540
+    height: 490
     title: "Threat Ping"
     color: "transparent"
 
@@ -86,11 +86,11 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 currentIndex: -1
                 // displayText: currentIndex === -1 ? "Select your region..." : currentText
-                editable: true
+                editable: false
 
                 placeholderText: "Select your region..."
 
-                model: ["Kyiv, Ukraine", "Lviv, Ukraine", "Odesa, Ukraine", "Ternopil, Ukraine"]
+                model: ["Kyiv, Ukraine", "Lviv, Ukraine", "Odesa, Ukraine", "Ternopil, Ukraine", "Kharkiv, Ukraine"]
 
             }
 
