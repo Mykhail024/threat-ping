@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtQml import QQmlApplicationEngine, qmlRegisterSingletonType
@@ -7,6 +8,8 @@ from pathlib import Path
 qml_dir = Path(__file__).parent / "qml"
 
 def main():
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "Fusion"
+
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
