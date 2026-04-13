@@ -1,53 +1,25 @@
-import time
-import os
-from dotenv import load_dotenv
+import sys
+from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtQml import QQmlApplicationEngine, qmlRegisterSingletonType
+from PyQt6.QtCore import QUrl
+from pathlib import Path
 
-from providers.base import Location
-from utils import resolve_location
-
-from providers.usgs import USGSProvider
-from providers.om import OMProvider
-
-from services.ai_advisor import ThreatAdvisor
-
-load_dotenv()
-
-LOCATION: Location = resolve_location("Osaka")
-POLL_INTERVAL = 30
-
-PROVIDERS = [
-    USGSProvider(LOCATION),
-    OMProvider(LOCATION)
-]
-
+qml_dir = Path(__file__).parent / "qml"
 
 def main():
-    print(f"threat-ping started — {LOCATION.display_name}")
+    app = QGuiApplication(sys.argv)
+    engine = QQmlApplicationEngine()
 
-    advisor = ThreatAdvisor()
-    seen_alerts = set()
+    qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Colors.qml")), "Theme", 1, 0, "Colors")
+    qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Typography.qml")), "Theme", 1, 0, "Typography")
+    qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Sizes.qml")), "Theme", 1, 0, "Sizes")
 
-    while True:
-        for provider in PROVIDERS:
-            alerts = provider.fetch()
-            for alert_text in alerts:
-                if alert_text not in seen_alerts:
-                    print(alert_text)
-                    seen_alerts.add(alert_text)
+    engine.load(QUrl("qml/main.qml"))
 
-                    # addressing AI only if it's important WARNING/CRITICAL
-                    is_threat = any(keyword in alert_text for keyword in ["Earthquake", "WARNING", "CRITICAL"])
+    if not engine.rootObjects():
+        sys.exit(1)
 
-                    if is_threat:
-                        print("  [AI is analyzing the threat...]")
-                        advice = advisor.generate_advice(
-                            threat_type=alert_text,
-                            location=LOCATION.display_name,
-                            severity="High"
-                        )
-                        print(f"  {advice}\n")
-
-        time.sleep(POLL_INTERVAL)
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":
