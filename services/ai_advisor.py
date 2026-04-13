@@ -1,7 +1,9 @@
 import os
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+load_dotenv()
 
 class ThreatAdvisor:
     def __init__(self):
@@ -33,7 +35,7 @@ class ThreatAdvisor:
         try:
             # model is to be changed
             response = self.client.models.generate_content(
-                model='gemini-2.5-flash-lite',
+                model='gemini-3.1-flash-lite',
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     temperature=0.3,
