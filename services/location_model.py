@@ -75,9 +75,17 @@ class LocationSearchModel(QAbstractListModel):
         if not index.isValid() or index.row() >= len(self._results):
             return None
         loc = self._results[index.row()]
-        if role == self.NameRole or role == Qt.ItemDataRole.DisplayRole:
-            return loc.display_name
 
+        if role == Qt.ItemDataRole.DisplayRole or role == self.NameRole:
+            return loc.display_name
+        if role == self.LatRole:
+            return loc.lat
+        if role == self.LonRole:
+            return loc.lon
+        if role == self.RegionRole:
+            return loc.region
+        if role == self.CountryRole:
+            return loc.country
         return None
 
     @pyqtSlot(str)
