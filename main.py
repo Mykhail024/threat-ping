@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QApplication
 from PyQt6.QtQml import QQmlApplicationEngine, qmlRegisterSingletonType
 from PyQt6.QtCore import QUrl
 from pathlib import Path
-from engine import ThreatEngine
+#from engine import ThreatEngine
 from services.location_service import LocationService
 from services.location_model import LocationSearchModel
 
@@ -23,12 +23,12 @@ def main():
 
     loc_service = LocationService()
     current_loc = loc_service.get_by_ip()
-    threat_engine = ThreatEngine(current_loc)
+#    threat_engine = ThreatEngine(current_loc)
 
     search_model = LocationSearchModel()
 
     context = engine.rootContext()
-    context.setContextProperty("threatEngine", threat_engine)
+#    context.setContextProperty("threatEngine", threat_engine)
     context.setContextProperty("searchModel", search_model)
 
     qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Colors.qml")), "Theme", 1, 0, "Colors")
@@ -42,7 +42,7 @@ def main():
         print(f"crit error: {qml_path}")
         sys.exit(1)
 
-    threat_engine.start()
+#    threat_engine.start()
 
     sys.exit(app.exec())
 
