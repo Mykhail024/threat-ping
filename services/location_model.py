@@ -1,7 +1,9 @@
-from PyQt6.QtCore import QAbstractListModel, Qt, pyqtSlot, QThread, pyqtSignal
 import requests
 import dataclasses
-from models import Location
+
+from PyQt6.QtCore import QAbstractListModel, QByteArray, QModelIndex, QVariant, Qt, pyqtSlot, QThread, pyqtSignal
+
+from providers.base import Location
 
 
 class SearchWorker(QThread):
@@ -44,6 +46,10 @@ class SearchWorker(QThread):
 
 class LocationSearchModel(QAbstractListModel):
     NameRole = Qt.ItemDataRole.UserRole + 1
+    LatRole = NameRole + 1
+    LonRole = LatRole + 1
+    RegionRole = LonRole + 1
+    CountryRole = RegionRole + 1
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -52,18 +58,26 @@ class LocationSearchModel(QAbstractListModel):
         self._last_query_id = 0
         print("LocationSearchModel created")
 
-    def rowCount(self, parent=None):
+    def rowCount(self, parent=QModelIndex()):
+        if parent.isValid():
+            return 0
         return len(self._results)
 
     def roleNames(self):
-        return {self.NameRole: b"cityName"}
+        return {Qt.ItemDataRole.DisplayRole: QByteArray(b"display"),
+                self.NameRole: QByteArray(b"cityName"),
+                self.LatRole: QByteArray(b"lat"),
+                self.LonRole: QByteArray(b"lon"),
+                self.RegionRole: QByteArray(b"region"),
+                self.CountryRole: QByteArray(b"country")}
 
-    def data(self, index, role):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if not index.isValid() or index.row() >= len(self._results):
             return None
         loc = self._results[index.row()]
         if role == self.NameRole or role == Qt.ItemDataRole.DisplayRole:
             return loc.display_name
+
         return None
 
     @pyqtSlot(str)

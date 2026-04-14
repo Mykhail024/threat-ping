@@ -30,6 +30,10 @@ ComboBox {
     contentItem: Text {
         text: control.displayText === "" ? control.placeholderText : control.displayText
 
+        elide: Text.ElideRight
+        clip: true
+        maximumLineCount: 1
+
         color: Colors.text_primary
         font.pixelSize: Typography.body_size
         font.weight: Typography.body_weight
@@ -124,7 +128,13 @@ ComboBox {
         required property var modelData
 
         contentItem: Text {
-            text: delegate_.modelData ?? ""
+            text: typeof delegate_.modelData === "string"
+                ? delegate_.modelData
+                : (delegate_.modelData?.[control.textRole] ?? "")
+
+            elide: Text.ElideRight
+            clip: true
+            maximumLineCount: 1
 
             color: Colors.text_primary
             font.pixelSize: Typography.body_size
