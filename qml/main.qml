@@ -3,7 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Effects
 
-import Theme 1.0
+import Theme
+import ThreatPing
 import "components"
 
 ApplicationWindow {
@@ -85,12 +86,19 @@ ApplicationWindow {
             SearchComboBox {
                 Layout.fillWidth: true
                 currentIndex: -1
-                // displayText: currentIndex === -1 ? "Select your region..." : currentText
-                editable: false
 
                 placeholderText: "Select your region..."
 
-                model: ["Kyiv, Ukraine", "Lviv, Ukraine", "Odesa, Ukraine", "Ternopil, Ukraine", "Kharkiv, Ukraine"]
+                textRole: "display"
+
+                // model: ["Kyiv, Ukraine", "Lviv, Ukraine", "Odesa, Ukraine", "Ternopil, Ukraine", "Kharkiv, Ukraine"]
+                model: LocationSearchModel {
+                    id: locationSearchModel
+                }
+
+                onSearchTextChanged: (text) => {
+                    locationSearchModel.search(text)
+                }
 
             }
 

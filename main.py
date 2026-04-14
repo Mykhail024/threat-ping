@@ -1,9 +1,12 @@
 import os
 import sys
-from PyQt6.QtGui import QGuiApplication
-from PyQt6.QtQml import QQmlApplicationEngine, qmlRegisterSingletonType
-from PyQt6.QtCore import QUrl
 from pathlib import Path
+
+from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtQml import QQmlApplicationEngine, qmlRegisterSingletonType, qmlRegisterType
+from PyQt6.QtCore import QUrl
+
+from services.location_model import LocationSearchModel
 
 qml_dir = Path(__file__).parent / "qml"
 
@@ -16,6 +19,8 @@ def main():
     qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Colors.qml")), "Theme", 1, 0, "Colors")
     qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Typography.qml")), "Theme", 1, 0, "Typography")
     qmlRegisterSingletonType(QUrl.fromLocalFile(str(qml_dir / "theme/Sizes.qml")), "Theme", 1, 0, "Sizes")
+
+    qmlRegisterType(LocationSearchModel, "ThreatPing", 1, 0, "LocationSearchModel")
 
     engine.load(QUrl("qml/main.qml"))
 
