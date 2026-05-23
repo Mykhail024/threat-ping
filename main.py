@@ -36,7 +36,7 @@ def main():
 
     if not engine.rootObjects():
         threat_engine.stop()
-        sys.exit(1
+        sys.exit(1)
     exit_code = app.exec()
     
     threat_engine.stop() 
