@@ -8,12 +8,12 @@ class AlertsInUaProvider(BaseProvider):
 
     def __init__(self, location: Location):
         super().__init__(location)
-        # TOKEEEEEEEEEEEEEEEEEEEEEEN
+        # Fetching token
         self.api_token = os.getenv("ALERTS_IN_UA_TOKEN")
 
     def fetch(self) -> list[str]:
         if not self.api_token:
-            return ["[System] ALERTS_IN_UA_TOKEN не знайдено у файлі .env"]
+            return ["[System WARNING] ALERTS_IN_UA_TOKEN not found in environment variables (check your .env file)."]
 
         try:
             response = requests.get(
@@ -31,13 +31,13 @@ class AlertsInUaProvider(BaseProvider):
                 loc_title = alert.get("location_title", "")
                 if self.location.region.lower() in loc_title.lower() or loc_title.lower() in self.location.region.lower():
                     alert_type = alert.get("alert_type", "air_raid")
-                    threat_name = "Air raid alert"
+                    threat_name = "Air Raid Alert"
                     if alert_type == "artillery_shelling":
-                        threat_name = "Artillery shells"
+                        threat_name = "Artillery Threat"
                     elif alert_type == "chemical":
-                        threat_name = "Chemical threat"
+                        threat_name = "Chemical Hazard"
                     elif alert_type == "nuclear":
-                        threat_name = "Radiation alert"
+                        threat_name = "Nuclear Threat"
 
                     active_alerts.append(f"[Air Raid CRITICAL] {threat_name} — {loc_title}")
 
