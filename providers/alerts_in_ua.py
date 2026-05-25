@@ -31,13 +31,13 @@ class AlertsInUaProvider(BaseProvider):
                 loc_title = alert.get("location_title", "")
                 if self.location.region.lower() in loc_title.lower() or loc_title.lower() in self.location.region.lower():
                     alert_type = alert.get("alert_type", "air_raid")
-                    threat_name = "Повітряна тривога"
+                    threat_name = "Air raid alert"
                     if alert_type == "artillery_shelling":
-                        threat_name = "Загроза артобстрілу"
+                        threat_name = "Artillery shells"
                     elif alert_type == "chemical":
-                        threat_name = "Хімічна загроза"
+                        threat_name = "Chemical threat"
                     elif alert_type == "nuclear":
-                        threat_name = "Радіаційна загроза"
+                        threat_name = "Radiation alert"
 
                     active_alerts.append(f"[Air Raid CRITICAL] {threat_name} — {loc_title}")
 
