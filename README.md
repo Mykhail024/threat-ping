@@ -17,6 +17,13 @@ For details, please refer to the [LICENSE](./LICENSE) file.
 ## Built With
 
 - [Python](https://www.python.org/)
+- [PySide6](https://doc.qt.io/qtforpython-6/)
+
+## Data Providers
+- [alerts.in.ua](https://alerts.in.ua/)
+- [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/)
+- [Open-Meteo API](https://open-meteo.com/)
+- [USGS Earthquake API](https://earthquake.usgs.gov)
 
 ## Third-party licenses
 
