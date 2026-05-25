@@ -42,7 +42,7 @@ class ThreatEngine(QThread):
         )
         self.ai_advice_signal.emit(advice)
 
-def run(self):
+    def run(self):
         while self.is_running:
             if self.isInterruptionRequested():
                 self.is_running = False
