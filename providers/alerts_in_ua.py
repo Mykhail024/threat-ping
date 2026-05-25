@@ -46,4 +46,4 @@ class AlertsInUaProvider(BaseProvider):
         except requests.exceptions.RequestException as e:
             return [f"[System] alerts.in.ua API timeout/error: {e}"]
         except Exception as e:
-            return [f"[System] Неочікувана помилка alerts.in.ua: {e}"]
+            return [f"[System] Unexpected error occurred in alerts.in.ua: {e}"]
