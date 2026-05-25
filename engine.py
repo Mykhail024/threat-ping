@@ -46,6 +46,10 @@ class ThreatEngine(QThread):
     def run(self):
         """Main background loop."""
         while self.is_running:
+            if self.isInterruptionRequested():
+                self.is_running = False
+                return
+
             for provider in self.providers:
                 try:
                     raw_alerts = provider.fetch()
