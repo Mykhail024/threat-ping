@@ -33,6 +33,16 @@ ApplicationWindow {
         startupEnabled: false
     })
 
+    function apply_settings() {
+        threatEngine.update_location_from_qml(
+            root.onboarding.location.region,
+            root.onboarding.location.display_name,
+            root.onboarding.location.lat,
+            root.onboarding.location.lon,
+            root.onboarding.location.country
+        )
+    }
+
     Component {
         id: locationSelect
 
@@ -331,7 +341,9 @@ ApplicationWindow {
                     if (root.onboarding.startupEnabled) {
                         console.log("Autostart enabled")
                     }
-                    root.close()
+                    root.hide()
+                    root.apply_settings()
+                    stack.pop(null)
                 }
             }
         }
