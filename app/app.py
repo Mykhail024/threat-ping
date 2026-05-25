@@ -78,3 +78,5 @@ class ThreatPing:
 
     def _register_qml_types(self):
         qmlRegisterType(LocationSearchModel, "ThreatPing", 1, 0, "LocationSearchModel")
+        if self.qml_engine is not None:
+            self.qml_engine.rootContext().setContextProperty("threatEngine", self.threat_engine)

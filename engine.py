@@ -1,6 +1,6 @@
 # engine.py
 import time
-from PySide6.QtCore import QThread, Signal
+from PySide6.QtCore import QThread, Signal, Slot
 from models import Alert, AlertType, Location
 from providers.usgs import USGSProvider
 from providers.om import OMProvider
@@ -33,6 +33,18 @@ class ThreatEngine(QThread):
         self.location = new_location
         self.seen_alerts.clear()
         self._init_providers()
+        print("Location changed to: ", self.location.country)
+
+    @Slot(str, str, float, float, str)
+    def update_location_from_qml(self, region : str, display_name: str, lat: float, lon: float, country: str):
+        new_location = Location(
+                region=region,
+                display_name=display_name,
+                lat=lat,
+                lon=lon,
+                country=country
+                )
+        self.update_location(new_location)
 
     def request_ai_advice(self, alert: Alert):
         advice = self.advisor.generate_advice(
