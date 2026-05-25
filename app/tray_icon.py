@@ -8,8 +8,9 @@ from models import AlertType
 from qml import resources_rc
 
 class TrayIcon(QSystemTrayIcon):
-    def __init__(self, on_quit, parent=None):
+    def __init__(self, on_quit, on_settings, parent=None):
         self.on_quit = on_quit
+        self.on_settings = on_settings
         self.icons = {
             AlertType.SAFE: QIcon(":/assets/icons/lucide--map-pin-check.svg"),
             AlertType.DANGER: QIcon(":/assets/icons/lucide--map-pin-x.svg"),
@@ -41,7 +42,7 @@ class TrayIcon(QSystemTrayIcon):
         self.on_quit()
 
     def on_settings_click(self):
-        print("Settings...")
+        self.on_settings()
             
     def set_state(self, state: AlertType):
         icon = self.icons.get(state, self.icons[AlertType.UNKNOWN])

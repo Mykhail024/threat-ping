@@ -41,7 +41,7 @@ class ThreatPing:
             self.stop()
             return 1
 
-        self.tray = TrayIcon(on_quit=self.quit, parent= None)
+        self.tray = TrayIcon(on_quit=self.quit, on_settings=self.on_settings, parent=None)
         self.tray.show()
 
         self.threat_engine.new_alert_signal.connect(self.on_alert)
@@ -75,6 +75,12 @@ class ThreatPing:
     def quit(self):
         self.shutdown()
         self.app.quit()
+
+    def on_settings(self):
+        if self.qml_engine is not None:
+            self.qml_engine.clearComponentCache()
+            window = self.qml_engine.rootObjects()[0]
+            window.show()
 
     def _register_qml_types(self):
         qmlRegisterType(LocationSearchModel, "ThreatPing", 1, 0, "LocationSearchModel")
