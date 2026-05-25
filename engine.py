@@ -40,7 +40,7 @@ class ThreatEngine(QThread):
         )
         self.ai_advice_signal.emit(advice)
 
-    def run(self):
+def run(self):
         while self.is_running:
             for provider in self.providers:
                 try:
@@ -48,12 +48,6 @@ class ThreatEngine(QThread):
                     for text in raw_alerts:
                         if text not in self.seen_alerts:
                             self.seen_alerts.add(text)
-                            severity = "INFO"
-                            if "CRITICAL" in text:
-                                severity = "CRITICAL"
-                            elif "WARNING" in text:
-                                severity = "WARNING"
-
                             if "[Weather" in text:
                                 source = "Weather"
                             elif "[Earthquake" in text:
@@ -63,10 +57,11 @@ class ThreatEngine(QThread):
                             else:
                                 source = "System"
 
+                            alert_type = AlertType.DANGER if "WARNING" in text or "CRITICAL" in text else AlertType.SAFE
                             alert_obj = Alert(
                                 source=source,
                                 message=text,
-                                type=AlertType.DANGER if "WARNING" in text or "CRITICAL" in text else AlertType.SAFE,
+                                type=alert_type,
                                 raw_data=text
                             )
                             self.new_alert_signal.emit(alert_obj)
