@@ -1,6 +1,6 @@
 # engine.py
 import time
-from PyQt6.QtCore import QThread, pyqtSignal
+from PySide6.QtCore import QThread, Signal
 from models import Alert, AlertType, Location
 from providers.usgs import USGSProvider
 from providers.om import OMProvider
@@ -9,8 +9,10 @@ from providers.alerts_in_ua import AlertsInUaProvider
 
 
 class ThreatEngine(QThread):
-    new_alert_signal = pyqtSignal(Alert)
-    ai_advice_signal = pyqtSignal(str)
+    # This signal sends new alerts to the GUI
+    new_alert_signal = Signal(Alert)
+    # This signal sends AI advice back to the GUI
+    ai_advice_signal = Signal(str)
 
     def __init__(self, location: Location):
         super().__init__()
@@ -42,6 +44,10 @@ class ThreatEngine(QThread):
 
 def run(self):
         while self.is_running:
+            if self.isInterruptionRequested():
+                self.is_running = False
+                return
+
             for provider in self.providers:
                 try:
                     raw_alerts = provider.fetch()

@@ -56,7 +56,7 @@ ApplicationWindow {
                     width: 52
                     height: 52
 
-                    source: "assets/icons/lucide--map-pin.svg"
+                    source: "qrc:/assets/icons/lucide--map-pin.svg"
                     sourceSize.width: width // SVG render size
                     sourceSize.height: height
 
@@ -161,7 +161,7 @@ ApplicationWindow {
                     width: 52
                     height: 52
 
-                    source: "assets/icons/lucide--bell.svg"
+                    source: "qrc:/assets/icons/lucide--bell.svg"
                     sourceSize.width: width // SVG render size
                     sourceSize.height: height
 
@@ -265,7 +265,7 @@ ApplicationWindow {
                     width: 72
                     height: 72
 
-                    source: "assets/icons/lucide--shield-check.svg"
+                    source: "qrc:/assets/icons/lucide--shield-check.svg"
                     sourceSize.width: width // SVG render size
                     sourceSize.height: height
 

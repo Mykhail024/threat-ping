@@ -1,21 +1,19 @@
 from pathlib import Path
 import sys
-from PyQt6.QtGui import QIcon, QAction
-from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PySide6.QtGui import QIcon, QAction
+from PySide6.QtWidgets import QSystemTrayIcon, QMenu
 
 from models import AlertType
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-ICONS_DIR = BASE_DIR / "qml" / "assets" / "icons"
+from qml import resources_rc
 
 class TrayIcon(QSystemTrayIcon):
     def __init__(self, on_quit, parent=None):
         self.on_quit = on_quit
         self.icons = {
-            AlertType.SAFE: QIcon(str(ICONS_DIR / "lucide--map-pin-check.svg")),
-            AlertType.DANGER: QIcon(str(ICONS_DIR / "lucide--map-pin-x.svg")),
-            AlertType.UNKNOWN: QIcon(str(ICONS_DIR / "lucide--map-pin.svg")),
+            AlertType.SAFE: QIcon(":/assets/icons/lucide--map-pin-check.svg"),
+            AlertType.DANGER: QIcon(":/assets/icons/lucide--map-pin-x.svg"),
+            AlertType.UNKNOWN: QIcon(":/assets/icons/lucide--map-pin.svg"),
         }
 
         super().__init__(self.icons[AlertType.UNKNOWN], parent)
