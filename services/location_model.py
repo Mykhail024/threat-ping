@@ -1,14 +1,14 @@
 import requests
 import dataclasses
 
-from PyQt6.QtCore import QAbstractListModel, QByteArray, QModelIndex, QVariant, Qt, pyqtSlot, QThread, pyqtSignal
+from PySide6.QtCore import QAbstractListModel, QByteArray, QModelIndex, Qt, Slot, QThread, Signal
 
 from providers.base import Location
 
 
 class SearchWorker(QThread):
-    results_ready = pyqtSignal(int, list)
-    error_occurred = pyqtSignal(int, str)
+    results_ready = Signal(int, list)
+    error_occurred = Signal(int, str)
 
     def __init__(self, query_id, query):
         super().__init__()
@@ -58,7 +58,7 @@ class LocationSearchModel(QAbstractListModel):
         self._last_query_id = 0
         print("LocationSearchModel created")
 
-    def rowCount(self, parent=QModelIndex()):
+    def rowCount(self, parent=QModelIndex()): # pyright: ignore[reportIncompatibleMethodOverride]
         if parent.isValid():
             return 0
         return len(self._results)
@@ -71,7 +71,7 @@ class LocationSearchModel(QAbstractListModel):
                 self.RegionRole: QByteArray(b"region"),
                 self.CountryRole: QByteArray(b"country")}
 
-    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole): # pyright: ignore[reportIncompatibleMethodOverride]
         if not index.isValid() or index.row() >= len(self._results):
             return None
         loc = self._results[index.row()]
@@ -88,7 +88,7 @@ class LocationSearchModel(QAbstractListModel):
             return loc.country
         return None
 
-    @pyqtSlot(str)
+    @Slot(str)
     def search(self, query):
         print(f"Searching: '{query}'")
         if len(query) < 3:
@@ -107,7 +107,7 @@ class LocationSearchModel(QAbstractListModel):
         self._worker.error_occurred.connect(self.handle_error)
         self._worker.start()
 
-    @pyqtSlot(int, list)
+    @Slot(int, list)
     def handle_results(self, query_id, new_results):
         if query_id == self._last_query_id:
             print(f"Updating model: {len(new_results)} items")
@@ -115,12 +115,12 @@ class LocationSearchModel(QAbstractListModel):
             self._results = new_results
             self.endResetModel()
 
-    @pyqtSlot(int, str)
+    @Slot(int, str)
     def handle_error(self, query_id, error_msg):
         if query_id == self._last_query_id:
             print(f"Search error: {error_msg}")
 
-    @pyqtSlot(int, result='QVariant')
+    @Slot(int, result='QVariant')
     def get_location(self, index):
         if 0 <= index < len(self._results):
             return dataclasses.asdict(self._results[index])

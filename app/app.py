@@ -1,9 +1,8 @@
 from pathlib import Path
 
-from PyQt6.QtCore import QUrl
-from PyQt6.QtQml import QQmlApplicationEngine, qmlRegisterSingletonType, qmlRegisterType
-from PyQt6.QtWidgets import QApplication
-from models import Alert, AlertType
+from PySide6.QtCore import QUrl
+from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
+from models import Alert
 from services.location_model import LocationSearchModel
 from services.location_service import LocationService
 from engine import ThreatEngine
@@ -34,6 +33,7 @@ class ThreatPing:
         print(f"Engine started for: {self.current_location.display_name}")
 
         self.qml_engine = QQmlApplicationEngine()
+        self.qml_engine.addImportPath(self.qml_dir)
         self._register_qml_types()
         self.qml_engine.load(QUrl.fromLocalFile(str(self.qml_dir / "main.qml")))
 
@@ -77,17 +77,4 @@ class ThreatPing:
         self.app.quit()
 
     def _register_qml_types(self):
-        qmlRegisterSingletonType(
-            QUrl.fromLocalFile(str(self.qml_dir / "theme/Colors.qml")),
-            "Theme", 1, 0, "Colors"
-        )
-        qmlRegisterSingletonType(
-            QUrl.fromLocalFile(str(self.qml_dir / "theme/Typography.qml")),
-            "Theme", 1, 0, "Typography"
-        )
-        qmlRegisterSingletonType(
-            QUrl.fromLocalFile(str(self.qml_dir / "theme/Sizes.qml")),
-            "Theme", 1, 0, "Sizes"
-        )
-
         qmlRegisterType(LocationSearchModel, "ThreatPing", 1, 0, "LocationSearchModel")

@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 
 from app.app import ThreatPing
 
