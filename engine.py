@@ -76,6 +76,9 @@ class ThreatEngine(QThread):
                                 source = "System"
 
                             alert_type = AlertType.DANGER if "WARNING" in text or "CRITICAL" in text else AlertType.SAFE
+                            if alert_type is AlertType.SAFE:
+                                   continue
+
                             alert_obj = Alert(
                                 source=source,
                                 message=text,
