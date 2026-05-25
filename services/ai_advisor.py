@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+from models import AlertType
+
 load_dotenv()
 
 class ThreatAdvisor:
@@ -15,7 +17,7 @@ class ThreatAdvisor:
             self.client = None
             print("[Warning] GEMINI_API_KEY not found. Running in Mock Mode.")
 
-    def generate_advice(self, threat_type: str, location: str, severity: str) -> str:
+    def generate_advice(self, threat_type: str, location: str, type: AlertType) -> str:
         """
         Takes threat details and asks AI for survival advice.
         """
@@ -26,7 +28,7 @@ class ThreatAdvisor:
         #  Prompt Engineering
         prompt = (
             f"You are an emergency survival assistant. "
-            f"A {severity} threat '{threat_type}' has been reported in {location}. "
+            f"A {type} threat '{threat_type}' has been reported in {location}. "
             f"Provide a short, actionable survival tip (max 2 sentences). "
             f"Do not use markdown formatting like bold or italics."
         )

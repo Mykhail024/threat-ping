@@ -3,19 +3,22 @@ import sys
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
 
+from models import AlertType
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ICONS_DIR = BASE_DIR / "qml" / "assets" / "icons"
 
 class TrayIcon(QSystemTrayIcon):
-    def __init__(self, parent=None):
+    def __init__(self, on_quit, parent=None):
+        self.on_quit = on_quit
         self.icons = {
-            "normal": QIcon(str(ICONS_DIR / "lucide--map-pin-check.svg")),
-            "danger": QIcon(str(ICONS_DIR / "lucide--map-pin-x.svg")),
-            "loading": QIcon(str(ICONS_DIR / "lucide--map-pin.svg")),
+            AlertType.SAFE: QIcon(str(ICONS_DIR / "lucide--map-pin-check.svg")),
+            AlertType.DANGER: QIcon(str(ICONS_DIR / "lucide--map-pin-x.svg")),
+            AlertType.UNKNOWN: QIcon(str(ICONS_DIR / "lucide--map-pin.svg")),
         }
 
-        super().__init__(self.icons["loading"], parent)
+        super().__init__(self.icons[AlertType.UNKNOWN], parent)
 
         self.menu = QMenu()
 
@@ -35,22 +38,21 @@ class TrayIcon(QSystemTrayIcon):
             print("Left clicked!")
 
     def on_quit_click(self):
-        app = QApplication.instance()
-        if app is not None:
-            app.quit()
-            print("Exit...")
+        print("Quit...")
+        self.hide()
+        self.on_quit()
 
     def on_settings_click(self):
         print("Settings...")
             
-    def set_state(self, state: str):
-        icon = self.icons.get(state, self.icons["loading"])
+    def set_state(self, state: AlertType):
+        icon = self.icons.get(state, self.icons[AlertType.UNKNOWN])
         self.setIcon(icon)
 
         tooltips = {
-            "normal": "ThreatPing: Safe",
-            "danger": "ThreatPing: Critical threat",
-            "loading": "ThreatPing: Updating...",
+            AlertType.SAFE: "ThreatPing: Safe",
+            AlertType.DANGER: "ThreatPing: Critical threat",
+            AlertType.UNKNOWN: "ThreatPing: Updating...",
         }
         self.setToolTip(tooltips.get(state, "ThreatPing"))
 
