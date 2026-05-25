@@ -1,4 +1,10 @@
 from dataclasses import dataclass
+from enum import Enum, auto
+
+class AlertType(Enum):
+    SAFE = auto()
+    DANGER = auto()
+    UNKNOWN = auto()
 
 @dataclass
 class Location:
@@ -12,5 +18,5 @@ class Location:
 class Alert:
     source: str      # e.g., 'Weather', 'Earthquake'
     message: str     # Human-readable description
-    severity: str    # 'INFO', 'WARNING', 'CRITICAL'
+    type: AlertType
     raw_data: str    # Original text to pass to AI if needed

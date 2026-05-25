@@ -1,7 +1,7 @@
 # engine.py
 import time
 from PyQt6.QtCore import QThread, pyqtSignal
-from models import Alert, Location
+from models import Alert, AlertType, Location
 from providers.usgs import USGSProvider
 from providers.om import OMProvider
 from services.ai_advisor import ThreatAdvisor
@@ -36,7 +36,7 @@ class ThreatEngine(QThread):
         advice = self.advisor.generate_advice(
             threat_type=alert.raw_data,
             location=self.location.display_name,
-            severity=alert.severity
+            type=alert.type
         )
         self.ai_advice_signal.emit(advice)
 
@@ -66,11 +66,12 @@ class ThreatEngine(QThread):
                             alert_obj = Alert(
                                 source=source,
                                 message=text,
-                                severity=severity,
+                                type=AlertType.DANGER if "WARNING" in text or "CRITICAL" in text else AlertType.SAFE,
                                 raw_data=text
                             )
                             self.new_alert_signal.emit(alert_obj)
                 except Exception as e:
+                    self.new_alert_signal.emit(Alert(source="System", message="Provider error", type=AlertType.UNKNOWN, raw_data="Provider error"))
                     print(f"Provider error: {e}")
 
             time.sleep(10)
