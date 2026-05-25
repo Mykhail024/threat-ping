@@ -2,6 +2,7 @@ from pathlib import Path
 
 from PySide6.QtCore import QUrl
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
+from PySide6.QtWidgets import QSystemTrayIcon
 from models import Alert
 from services.location_model import LocationSearchModel
 from services.location_service import LocationService
@@ -54,8 +55,7 @@ class ThreatPing:
     def on_alert(self, alert : Alert):
         if self.tray is not None:
             self.tray.set_state(alert.type)
-
-            print("Alert: ", alert.type.name)
+            self.tray.showMessage("ThreatPing", "New threat detected: " + alert.message, QSystemTrayIcon.MessageIcon.Warning, 5000)
 
     def stop(self):
         if self.threat_engine is not None:
