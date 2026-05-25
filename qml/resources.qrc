@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>components/StyledSwitch.qml</file>
+        <file>components/StyledButton.qml</file>
+        <file>components/SearchComboBox.qml</file>
+
+        <file>Theme/qmldir</file>
+        <file>Theme/Typography.qml</file>
+        <file>Theme/Sizes.qml</file>
+        <file>Theme/Colors.qml</file>
+
+        <file>assets/icons/lucide--map-pin.svg</file>
+        <file>assets/icons/lucide--map-pin-check.svg</file>
+        <file>assets/icons/lucide--map-pin-x.svg</file>
+
+        <file>assets/icons/lucide--bell.svg</file>
+        <file>assets/icons/lucide--chevron-down.svg</file>
+        <file>assets/icons/lucide--shield-check.svg</file>
+    </qresource>
+</RCC>
