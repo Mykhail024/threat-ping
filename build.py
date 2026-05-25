@@ -8,9 +8,9 @@ print("Building Qt resources...")
 
 subprocess.run([
     "pyside6-rcc",
-    str(ROOT / "qml/resources.qrc"),
+    str(ROOT / "qml" / "resources.qrc"),
     "-o",
-    str(ROOT / "qml/resources_rc.py")
+    str(ROOT / "qml" / "resources_rc.py")
 ], check=True)
 
 
