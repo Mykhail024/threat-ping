@@ -10,8 +10,18 @@ ComboBox {
 
     property string placeholderText
     property int debounceMsec: 500
+    property alias text: searchText.text
 
     signal searchTextChanged(string text)
+
+    function activateSearch(selectAllText = true) {
+        popup.open()
+        Qt.callLater(function() {
+            searchText.forceActiveFocus()
+            if (selectAllText)
+                searchText.selectAll()
+        })
+    }
 
     background: Rectangle {
         implicitWidth: 140

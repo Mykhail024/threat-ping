@@ -101,26 +101,37 @@ ApplicationWindow {
                 font.letterSpacing: Typography.body_small_spacing
             }
 
-
-            SearchComboBox {
-                id: searchCountry
-                Layout.leftMargin: parent.width * 0.20
-                Layout.rightMargin: Layout.leftMargin
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: 150
                 Layout.fillWidth: true
-                currentIndex: -1
+                spacing: Sizes.s3
 
-                placeholderText: "Select your region..."
+                SearchComboBox {
+                    id: searchCountry
 
-                textRole: "display"
+                    currentIndex: -1
 
-                model: LocationSearchModel {
-                    id: locationSearchModel
+                    placeholderText: "Select your region..."
+
+                    textRole: "display"
+
+                    model: LocationSearchModel {
+                        id: locationSearchModel
+                    }
+
+                    onSearchTextChanged: (text) => {
+                        locationSearchModel.search(text)
+                    }
                 }
 
-                onSearchTextChanged: (text) => {
-                    locationSearchModel.search(text)
+                StyledButton {
+                    icon.source: "qrc:/assets/icons/lucide--locate.svg"
+                    onClicked: {
+                        searchCountry.text = app.get_region_name_by_ip()
+                        searchCountry.activateSearch(true)
+                    }
                 }
-
             }
 
             Item { Layout.fillHeight: true }

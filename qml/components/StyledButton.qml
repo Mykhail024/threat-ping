@@ -8,19 +8,40 @@ Button {
 
     padding: 12
 
-    contentItem: Text {
-        text: control.text
-        color: control.enabled ? Colors.text_primary : Colors.text_secondary
+    contentItem: Item {
+        implicitWidth: contentRow.implicitWidth
+        implicitHeight: contentRow.implicitHeight
 
-        font.pixelSize: Typography.body_size
-        font.weight: Typography.body_weight
+        Row {
+            id: contentRow
+            anchors.centerIn: parent
+            spacing: 8
 
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
+            Image {
+                visible: control.icon.source.toString() !== ""
+                source: control.icon.source
+                width: 18
+                height: 18
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+            }
 
-        Behavior on color { 
-            ColorAnimation {duration: 150}
+            Text {
+                visible: control.text.length > 0
+                text: control.text
+                color: control.enabled ? Colors.text_primary : Colors.text_secondary
+
+                font.pixelSize: Typography.body_size
+                font.weight: Typography.body_weight
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+
+                Behavior on color {
+                    ColorAnimation { duration: 150 }
+                }
+            }
         }
     }
 
@@ -37,12 +58,12 @@ Button {
             cursorShape: Qt.PointingHandCursor
         }
 
-        Behavior on color { 
-            ColorAnimation {duration: 150}
+        Behavior on color {
+            ColorAnimation { duration: 150 }
         }
 
-        Behavior on opacity { 
-            NumberAnimation {duration: 150}
+        Behavior on opacity {
+            NumberAnimation { duration: 150 }
         }
     }
 }

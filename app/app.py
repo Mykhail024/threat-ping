@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QObject, QUrl, Slot
 from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide6.QtWidgets import QSystemTrayIcon
 from models import Alert
@@ -11,8 +11,9 @@ from app.tray_icon import TrayIcon
 
 from qml import resources_rc
 
-class ThreatPing:
+class ThreatPing(QObject):
     def __init__(self, app) -> None:
+        super().__init__()
         self.app = app
 
         self.loc_service = LocationService()
@@ -57,6 +58,11 @@ class ThreatPing:
             self.tray.set_state(alert.type)
             self.tray.showMessage("ThreatPing", "New threat detected: " + alert.message, QSystemTrayIcon.MessageIcon.Warning, 5000)
 
+    @Slot(result='QVariant')
+    def get_region_name_by_ip(self):
+        if self.loc_service is not None:
+            return self.loc_service.get_by_ip().region
+
     def stop(self):
         if self.threat_engine is not None:
             self.threat_engine.stop()
@@ -86,3 +92,4 @@ class ThreatPing:
         qmlRegisterType(LocationSearchModel, "ThreatPing", 1, 0, "LocationSearchModel")
         if self.qml_engine is not None:
             self.qml_engine.rootContext().setContextProperty("threatEngine", self.threat_engine)
+            self.qml_engine.rootContext().setContextProperty("app", self)

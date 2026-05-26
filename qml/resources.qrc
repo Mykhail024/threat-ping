@@ -17,5 +17,7 @@
         <file>assets/icons/lucide--bell.svg</file>
         <file>assets/icons/lucide--chevron-down.svg</file>
         <file>assets/icons/lucide--shield-check.svg</file>
+
+        <file>assets/icons/lucide--locate.svg</file>
     </qresource>
 </RCC>
