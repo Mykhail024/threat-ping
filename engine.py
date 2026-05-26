@@ -65,7 +65,6 @@ class ThreatEngine(QThread):
                     raw_alerts = provider.fetch()
                     for text in raw_alerts:
                         if text not in self.seen_alerts:
-                            self.seen_alerts.add(text)
                             if "[Weather" in text:
                                 source = "Weather"
                             elif "[Earthquake" in text:
@@ -75,7 +74,7 @@ class ThreatEngine(QThread):
                             else:
                                 source = "System"
 
-                            alert_type = AlertType.DANGER if "WARNING" in text or "CRITICAL" in text else AlertType.SAFE
+                            alert_type = AlertType.DANGER if "WARNING" in text or "CRITICAL" in text or "Earthquake" in text else AlertType.SAFE
                             if alert_type is AlertType.SAFE:
                                    continue
 
@@ -86,6 +85,7 @@ class ThreatEngine(QThread):
                                 raw_data=text
                             )
                             self.new_alert_signal.emit(alert_obj)
+                            self.seen_alerts.add(text)
                 except Exception as e:
                     self.new_alert_signal.emit(Alert(source="System", message="Provider error", type=AlertType.UNKNOWN, raw_data="Provider error"))
                     print(f"Provider error: {e}")
