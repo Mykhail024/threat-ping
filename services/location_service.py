@@ -3,7 +3,7 @@ import requests
 from utils import resolve_location
 from models import Location
 
-class LocationService:
+class LocationService():
     @staticmethod
     def get_by_query(query: str) -> Location:
         return resolve_location(query)

@@ -103,12 +103,13 @@ ApplicationWindow {
 
             RowLayout {
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: 150
                 Layout.fillWidth: true
                 spacing: Sizes.s3
 
                 SearchComboBox {
                     id: searchCountry
+                    Layout.preferredWidth: 300
+                    Layout.leftMargin: locateButton.width - 5 + Sizes.s3
 
                     currentIndex: -1
 
@@ -126,6 +127,7 @@ ApplicationWindow {
                 }
 
                 StyledButton {
+                    id: locateButton
                     icon.source: "qrc:/assets/icons/lucide--locate.svg"
                     onClicked: {
                         searchCountry.text = app.get_region_name_by_ip()
