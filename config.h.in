@@ -1,0 +1,3 @@
+#pragma once
+
+#define THREAT_PING_VERSION "@THREAT_PING_VERSION@"
