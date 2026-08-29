@@ -21,10 +21,13 @@ set(CMAKE_AUTOMOC ON)
 set(QT_QML_GENERATE_QMLLS_INI ON)
 set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 
+add_subdirectory(providers)
+
 qt_add_executable(threat-ping main.cpp Application.cpp Application.h)
 
-target_link_libraries(threat-ping PRIVATE smp::log Qt6::Core Qt6::Gui
-                                          Qt6::QuickControls2 Qt6::Svg)
+target_link_libraries(threat-ping PRIVATE threatping::core smp::log Qt6::Core
+                                          Qt6::Gui Qt6::QuickControls2 Qt6::Svg)
 
 # PCH
 set_target_properties(core PROPERTIES PRECOMPILE_HEADERS ${PCH_HEADER})
+set_target_properties(threat-ping PROPERTIES PRECOMPILE_HEADERS_REUSE_FROM core)
