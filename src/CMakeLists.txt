@@ -1,5 +1,7 @@
 include(FetchContent)
 
+set(PCH_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/pch.h)
+
 set(SMP_LOG_BUILD_EXAMPLES
     OFF
     CACHE BOOL "" FORCE)
@@ -24,3 +26,5 @@ qt_add_executable(threat-ping main.cpp Application.cpp Application.h)
 target_link_libraries(threat-ping PRIVATE smp::log Qt6::Core Qt6::Gui
                                           Qt6::QuickControls2 Qt6::Svg)
 
+# PCH
+set_target_properties(core PROPERTIES PRECOMPILE_HEADERS ${PCH_HEADER})
