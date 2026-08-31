@@ -29,6 +29,10 @@ set(TSAN
     OFF
     CACHE STRING "ThreadSanitizer support")
 
+set(THREAT_PING_PLUGIN_INSTALL_DIR
+    ""
+    CACHE STRING "Installation directory for threat-ping plugins")
+
 string(TOLOWER "${CMAKE_BUILD_TYPE}" build_type_lower)
 if(build_type_lower STREQUAL "debug")
   message(STATUS "Building in debug mode")
@@ -56,7 +60,31 @@ endif()
 
 include_directories("${CMAKE_BINARY_DIR}")
 
+add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+
+# Installs
+if(THREAT_PING_PLUGIN_INSTALL_DIR)
+  set(PLUGIN_INSTALL_DIR "${THREAT_PING_PLUGIN_INSTALL_DIR}")
+else()
+  if(APPLE)
+    set(PLUGIN_INSTALL_DIR
+        "${CMAKE_INSTALL_PREFIX}/ThreatPing.app/Contents/PlugIns")
+  elseif(WIN32)
+    set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}/plugins")
+  elseif(ANDROID)
+    set(PLUGIN_INSTALL_DIR "/assets/plugins")
+  else()
+    # Unix (Linux)
+    set(PLUGIN_INSTALL_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/threat-ping/plugins")
+  endif()
+endif()
+
+set(THREAT_PROVIDER_PLUGIN_INSTALL_DIR "${PLUGIN_INSTALL_DIR}/providers")
+
+message(
+  STATUS
+    "ThreatPing plugins will be installed to the ${PLUGIN_INSTALL_DIR} directory"
+)
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
                ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
-
-add_subdirectory(${CMAKE_SOURCE_DIR}/src)
