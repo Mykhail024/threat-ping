@@ -13,6 +13,8 @@ class Application : public QObject
     public:
         explicit Application(QObject *parent = nullptr);
 
+        [[nodiscard]] static QStringList defaultProvidersDir();
+
     private:
         void registerThreatProviders(const QString &path);
 
